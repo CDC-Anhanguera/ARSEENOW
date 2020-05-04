@@ -15,7 +15,7 @@ import java.sql.SQLException;
  */
 public  class conection {
     public static void main(String[] args) throws SQLException {
-        Connection conexao = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/dbdoceria", "root","");
+        Connection conexao = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/db_estoque", "root","");
         System.out.println("CONECTADO AO BANCO COM SUCESSO!");
         conexao.close();
     }

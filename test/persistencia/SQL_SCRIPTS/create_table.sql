@@ -1,5 +1,5 @@
-create table if not exists doce (
-    id_doce int UNSIGNED not null AUTO_INCREMENT PRIMARY KEY,
+create table if not exists produto (
+    id_produto int UNSIGNED not null AUTO_INCREMENT PRIMARY KEY,
     nome varchar(60),
     valor DOUBLE,
     quantidade INT

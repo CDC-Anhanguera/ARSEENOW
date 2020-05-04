@@ -5,24 +5,24 @@
  */
 package negocio;
 
-import persistencia.DoceDAO;
+import persistencia.ProdutoDAO;
 
 /**
  *
  * @author aryel.sa
  */
-public class Doce {
-    private int id_doce;
+public class Produto {
+    private int id;
     private String nome;
     private float valor;
     private int quantidade;
 
-    public int getId_doce() {
-        return id_doce;
+    public int getId() {
+        return id;
     }
 
-    public void setId_doce(int id_doce) {
-        this.id_doce = id_doce;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -50,7 +50,7 @@ public class Doce {
     }
     
     public void salvar(){
-        DoceDAO dao = new DoceDAO();
+        ProdutoDAO dao = new ProdutoDAO();
         dao.adiciona(this);
     }
 
