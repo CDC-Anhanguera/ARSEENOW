@@ -5,12 +5,6 @@
  */
 package apresentacao;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import javax.swing.JOptionPane;
 import negocio.Produto;
 
@@ -21,14 +15,27 @@ import negocio.Produto;
 
 
 public class fmProduto extends javax.swing.JInternalFrame {
-
+    private int id_produto;
+    private boolean isUpdateMode = false;
+    
     /**
-     * Creates new form fmPaciente2
+     * Creates new form fmProduto on create mode by default
      */
     public fmProduto() {
         initComponents();
     }
-
+    
+    /**
+     * Cria um novo formulario fmProduto passando um modo do formulario
+     * 
+     * @param isUpdateMode boolean usada para mudar o formulario para modo de edição
+     * @param id_produto id do produto a ser aberto no formulario
+     */
+    public fmProduto(boolean isUpdateMode, int id_produto) {
+        initComponents();
+        this.isUpdateMode = isUpdateMode;
+        this.id_produto = id_produto;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -82,7 +89,7 @@ public class fmProduto extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Quantidade:");
 
-        jLabel4.setText("Valor:");
+        jLabel4.setText("Valor(unidade):");
 
         txtValor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -98,21 +105,19 @@ public class fmProduto extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtNome, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                    .addComponent(txtValor))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
-                .addComponent(txtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43))
+                .addComponent(txtQuantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,7 +132,7 @@ public class fmProduto extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(146, Short.MAX_VALUE))
+                .addContainerGap(149, Short.MAX_VALUE))
         );
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -174,9 +179,7 @@ public class fmProduto extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(162, 162, 162))))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,23 +199,31 @@ public class fmProduto extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    File arquivoFoto = null;
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
+        
         int valor = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja salvar ?", "Sistema de Estoque", 1);
-        if(valor==0){
-            // recuperando dados inseridos
+        if(valor==0){// se usuario apertou sim
+            
             Produto produto = new Produto();
+            
+            // recuperando dados inseridos
             produto.setNome(txtNome.getText());
             produto.setQuantidade((Integer) txtQuantidade.getValue());
-            produto.setValor(Float.parseFloat(txtValor.getText()));           
-
-            // gravamos os dados
-            produto.salvar();
-            JOptionPane.showMessageDialog(null, "Os dados foram gravados");
+            produto.setValor(Float.parseFloat(txtValor.getText())); 
             
-            //limpa formulario
-            limpar();
-            habilitar(false);
+            if(this.isUpdateMode){
+                produto.setId(this.id_produto);
+                produto.altera();
+                this.dispose();
+            } else {
+                // gravamos os dados
+                produto.salvar();
+
+                //limpa formulario
+                limpar();
+                habilitar(false);
+            }
+            JOptionPane.showMessageDialog(null, "Dados gravados com sucesso!");
         }
     }//GEN-LAST:event_btSalvarActionPerformed
 
@@ -226,8 +237,18 @@ public class fmProduto extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btNovoActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-        this.habilitar(false);
-        this.limpar();
+        if(this.isUpdateMode){
+            Produto produto = Produto.getByID(id_produto);
+            
+            txtNome.setText(produto.getNome());
+            txtQuantidade.setValue(produto.getQuantidade());
+            txtValor.setText(String.valueOf(produto.getValor()));
+            
+        } else {
+            this.habilitar(false);
+            this.limpar();
+        }
+
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed

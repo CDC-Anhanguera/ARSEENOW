@@ -10,9 +10,13 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
+import negocio.Produto;
 
 /**
  *
@@ -36,10 +40,15 @@ public class fmPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        popAlterar = new javax.swing.JMenuItem();
+        popExcluir = new javax.swing.JMenuItem();
         jToolBar1 = new javax.swing.JToolBar();
         btCadastrarPaciente = new javax.swing.JButton();
         btSair = new javax.swing.JButton();
         jDesktopPane1 = new javax.swing.JDesktopPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableProdutos = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         laUsuario = new javax.swing.JLabel();
         laData = new javax.swing.JLabel();
@@ -55,6 +64,22 @@ public class fmPrincipal extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuAjuda = new javax.swing.JMenu();
         jMenuSobre = new javax.swing.JMenuItem();
+
+        popAlterar.setText("Alterar");
+        popAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                popAlterarActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(popAlterar);
+
+        popExcluir.setText("Excluir");
+        popExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                popExcluirActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(popExcluir);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de Estoque");
@@ -90,15 +115,41 @@ public class fmPrincipal extends javax.swing.JFrame {
         });
         jToolBar1.add(btSair);
 
+        jTableProdutos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jTableProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jTableProdutosMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jTableProdutosMouseReleased(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTableProdutos);
+
+        jDesktopPane1.setLayer(jScrollPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 753, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 412, Short.MAX_VALUE)
+            .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                .addGap(88, 88, 88)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         laUsuario.setText("Bem Vindo");
@@ -132,7 +183,7 @@ public class fmPrincipal extends javax.swing.JFrame {
         });
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Doces");
+        jMenuItem1.setText("Produtos");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -141,7 +192,7 @@ public class fmPrincipal extends javax.swing.JFrame {
         jMenu2.add(jMenuItem1);
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem2.setText("Anamneses");
+        jMenuItem2.setText("Administradores");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -245,29 +296,59 @@ public class fmPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btSairActionPerformed
     
-    private String mostraData(){
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date date = new Date();
-        return dateFormat.format(date);
-    }
-    
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        this.setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH );
-        laData.setText(mostraData());
+    private void atualizaData(){
+        laData.setText(criaData());
         
         ActionListener updater = new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent event){
-                laData.setText(mostraData());
+                laData.setText(criaData());
             }
         };
         
         Timer timer = new Timer(1000, updater);
         timer.start();
+    }
+    
+    private String criaData(){
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+    
+    private void preencheListaDeProdutos(){
+         try{
+            List<Produto> lista = Produto.getAll();
+
+            DefaultTableModel modelo = new DefaultTableModel(); //cria uma tabela na interface com os dados que foram carregados do banco
+            modelo.addColumn("ID");
+            modelo.addColumn("Nome");
+            modelo.addColumn("Valor");
+            modelo.addColumn("Quantidade");
+
+             //add os itens a tabela
+             lista.forEach((produto) -> {
+                 modelo.addRow(new Object [] {produto.getId(), produto.getNome(), produto.getValor(), produto.getQuantidade()});
+             });
+            jTableProdutos.setModel(modelo);
+            jTableProdutos.setComponentPopupMenu(jPopupMenu1); //linca o menupop de remocao do cliente
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Problemas com conexão ao banco de dados: "+e.getMessage(),"Sistema de Gerenciamento de Estacionamento",JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
+    }
+    
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        this.setExtendedState(this.getExtendedState()|JFrame.MAXIMIZED_BOTH ); // maximizando tela
+        this.atualizaData();
+        this.preencheListaDeProdutos();
     }//GEN-LAST:event_formWindowOpened
 
     private void jMenuAjudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuAjudaActionPerformed
-
+        fmProduto produtoForm = new fmProduto();
+        jDesktopPane1.add(produtoForm);
+        produtoForm.setVisible(true);
     }//GEN-LAST:event_jMenuAjudaActionPerformed
 
     private void jMenuSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuSobreActionPerformed
@@ -285,6 +366,42 @@ public class fmPrincipal extends javax.swing.JFrame {
         //jDesktopPane1.add(psicologo);
         //psicologo.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void popAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popAlterarActionPerformed
+        int column = 0;
+        int row = jTableProdutos.getSelectedRow();
+        int id_produto_selecionado = Integer.parseInt(jTableProdutos.getModel().getValueAt(row, column).toString());
+        fmProduto produtoForm = new fmProduto(true, id_produto_selecionado);
+        
+        jDesktopPane1.add(produtoForm);
+        produtoForm.setVisible(true);
+    }//GEN-LAST:event_popAlterarActionPerformed
+
+    private void popExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popExcluirActionPerformed
+        int valor = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir este produto do estoque?", "Sistema de Estoque", 1);
+        
+        if(valor==0){
+            int column = 0;
+            int row = jTableProdutos.getSelectedRow();
+            int id_produto_selecionado = Integer.parseInt(jTableProdutos.getModel().getValueAt(row, column).toString());
+            Produto.excluir(id_produto_selecionado);
+            this.preencheListaDeProdutos();
+        }
+    }//GEN-LAST:event_popExcluirActionPerformed
+
+    private void jTableProdutosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableProdutosMousePressed
+        JTable source = (JTable)evt.getSource();
+        int row = source.rowAtPoint( evt.getPoint() );
+        int column = source.columnAtPoint( evt.getPoint() );
+
+        if (! source.isRowSelected(row))
+            source.changeSelection(row, column, false, false);
+            //fazendo que linha seja selecionada caso seja clicada
+    }//GEN-LAST:event_jTableProdutosMousePressed
+
+    private void jTableProdutosMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableProdutosMouseReleased
+
+    }//GEN-LAST:event_jTableProdutosMouseReleased
 
     /**
      * @param args the command line arguments
@@ -339,8 +456,13 @@ public class fmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuSobre;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTableProdutos;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel laData;
     private javax.swing.JLabel laUsuario;
+    private javax.swing.JMenuItem popAlterar;
+    private javax.swing.JMenuItem popExcluir;
     // End of variables declaration//GEN-END:variables
 }

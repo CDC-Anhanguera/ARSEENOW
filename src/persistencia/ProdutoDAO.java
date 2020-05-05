@@ -131,7 +131,7 @@ public class ProdutoDAO implements IProdutoDAO {
             while (rs.next()){
                 Produto doce = new Produto();
                 
-                doce.setId(rs.getInt("id_doce"));
+                doce.setId(rs.getInt("id_produto"));
                 doce.setNome(rs.getString("nome"));
                 doce.setValor(rs.getFloat("valor"));
                 doce.setQuantidade(rs.getInt("quantidade"));
@@ -164,7 +164,7 @@ public class ProdutoDAO implements IProdutoDAO {
             Produto produto = new Produto();
             
              while (rs.next()){
-                produto.setId(rs.getInt("id_doce"));
+                produto.setId(rs.getInt("id_produto"));
                 produto.setNome(rs.getString("nome"));
                 produto.setValor(rs.getFloat("valor"));
                 produto.setQuantidade(rs.getInt("quantidade"));

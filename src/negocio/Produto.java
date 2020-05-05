@@ -5,6 +5,8 @@
  */
 package negocio;
 
+import java.util.ArrayList;
+import persistencia.IProdutoDAO;
 import persistencia.ProdutoDAO;
 
 /**
@@ -50,9 +52,33 @@ public class Produto {
     }
     
     public void salvar(){
-        ProdutoDAO dao = new ProdutoDAO();
+        IProdutoDAO dao = new ProdutoDAO();
         dao.adiciona(this);
     }
+    
+    public void altera(){
+        IProdutoDAO dao = new ProdutoDAO();
+        dao.altera(this);
+    }
+    
+    public static void altera(Produto produto){
+        IProdutoDAO dao = new ProdutoDAO();
+        dao.altera(produto);
+    }
+    
+    public static void excluir(int id){
+        IProdutoDAO dao = new ProdutoDAO();
+        dao.remove(id);
+    }
 
+    public static ArrayList<Produto> getAll(){
+        IProdutoDAO dao = new ProdutoDAO();
+        return dao.listarTodos();
+    }
+    
+    public static Produto getByID(int id){
+        IProdutoDAO dao = new ProdutoDAO();
+        return dao.getByID(id);
+    }
     
 }
