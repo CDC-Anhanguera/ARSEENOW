@@ -81,4 +81,8 @@ public class Produto {
         return dao.getByID(id);
     }
     
+    public static ArrayList<Produto> getByNome(String nome){
+        IProdutoDAO dao = new ProdutoDAO();
+        return dao.getByNome(nome);
+    }
 }
