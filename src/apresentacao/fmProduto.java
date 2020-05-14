@@ -5,6 +5,7 @@
  */
 package apresentacao;
 
+import java.awt.Component;
 import javax.swing.JOptionPane;
 import negocio.Produto;
 
@@ -203,7 +204,8 @@ public class fmProduto extends javax.swing.JInternalFrame {
         
         int valor = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja salvar ?", "Sistema de Estoque", 1);
         if(valor==0){// se usuario apertou sim
-            
+            Component source=(Component)evt.getSource();
+            source.getParent().dispatchEvent(evt);
             Produto produto = new Produto();
             
             // recuperando dados inseridos

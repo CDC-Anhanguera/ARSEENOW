@@ -14,7 +14,7 @@ import java.util.List;
 import negocio.Produto;
 
 /**
- *
+ * Classe para manipulação de dados de Produtos no Banco de dados
  * @author aryel.sa
  */
 
@@ -22,10 +22,8 @@ public class ProdutoDAO implements IProdutoDAO {
     private Connection connection;
     
     /**
-     * Construtor sem parametros
+     * Construtor sem parametros que cria uma conexão ao banco de dados
      * 
-     * @param Nenhum
-     * @return Nenhum
      */
     public ProdutoDAO (){
         this.connection = new ConFactory().getConnection();;
@@ -35,7 +33,6 @@ public class ProdutoDAO implements IProdutoDAO {
      * Metodo usado para adicionar um produto ao banco de dados
      * 
      * @param produto uma instancia da classe de negocio Produto
-     * @return Nenhum
      * @exception  RuntimeException ao inserir no banco.
      * @see RuntimeException
      */
@@ -63,7 +60,6 @@ public class ProdutoDAO implements IProdutoDAO {
      * Metodo usado para alterar um produto do banco de dados
      * 
      * @param produto uma instancia da classe de negocio Produto
-     * @return Nenhum
      * @exception  RuntimeException ao alterar o banco de dados.
      * @see RuntimeException
      */
@@ -92,8 +88,7 @@ public class ProdutoDAO implements IProdutoDAO {
     /**
      * Metodo usado para remover um produto do banco de dados
      * 
-     * @param produto uma instancia da classe de negocio Produto
-     * @return Nenhum
+     * @param id numero de identificação de um produto
      * @exception  RuntimeException ao remover o produto do banco de dados.
      * @see RuntimeException
      */
@@ -115,42 +110,41 @@ public class ProdutoDAO implements IProdutoDAO {
     /**
      * Metodo usado para buscar todos os produtos do banco de dados
      * 
-     * @param Nenhum
-     * @return Nenhum
+     * @return ArrayList - lista de todos os produtos 
      * @exception  RuntimeException ao buscar os produtos do banco de dados.
      * @see RuntimeException
      */
     @Override
     public ArrayList<Produto> listarTodos() {
         try{
-            List<Produto> lista_de_doces;
-            lista_de_doces = new ArrayList<>();
+            List<Produto> lista_de_produtos;
+            lista_de_produtos = new ArrayList<>();
             PreparedStatement stmt = this.connection.prepareStatement("select * from produto");
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()){
-                Produto doce = new Produto();
+                Produto produto = new Produto();
                 
-                doce.setId(rs.getInt("id_produto"));
-                doce.setNome(rs.getString("nome"));
-                doce.setValor(rs.getFloat("valor"));
-                doce.setQuantidade(rs.getInt("quantidade"));
+                produto.setId(rs.getInt("id_produto"));
+                produto.setNome(rs.getString("nome"));
+                produto.setValor(rs.getFloat("valor"));
+                produto.setQuantidade(rs.getInt("quantidade"));
                 
-                lista_de_doces.add(doce);
+                lista_de_produtos.add(produto);
             }
             rs.close();
             stmt.close();
-            return (ArrayList<Produto>) lista_de_doces;
+            return (ArrayList<Produto>) lista_de_produtos;
         } catch(SQLException e){
             throw new RuntimeException(e);
         }
     }
     
     /**
-     * Metodo usado para buscar um produto do banco de dados
+     * Metodo usado para buscar um produto do banco de dados pelo ID
      * 
      * @param ID um id de um produto cadastrado no banco de dados
-     * @return produto um produto cadastrado no banco de dados
+     * @return ArrayList - lista de todos os produtos 
      * @exception  RuntimeException ao buscar os produtos do banco de dados.
      * @see RuntimeException
      */
@@ -177,6 +171,40 @@ public class ProdutoDAO implements IProdutoDAO {
             throw new RuntimeException(e);
         }
     }
-
     
+    /**
+     * Metodo usado para buscar um produto do banco de dados pelo nome de um produto
+     * 
+     * @param nome nome de um produto cadastrado no banco de dados
+     * @return ArrayList - lista de produtos com o nome parecido ao passado no parametro
+     * @exception  RuntimeException ao buscar os produtos do banco de dados.
+     * @see RuntimeException
+     */
+    @Override
+    public ArrayList<Produto> getByNome(String nome) {
+        String sql = "SELECT * FROM produto WHERE nome LIKE '%" + nome + "%'";
+        try {
+            List<Produto> lista_de_produtos;
+            lista_de_produtos = new ArrayList<>();
+            PreparedStatement stmt = this.connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            
+             while (rs.next()){
+                Produto produto = new Produto();
+                
+                produto.setId(rs.getInt("id_produto"));
+                produto.setNome(rs.getString("nome"));
+                produto.setValor(rs.getFloat("valor"));
+                produto.setQuantidade(rs.getInt("quantidade"));
+                
+                lista_de_produtos.add(produto);
+            }
+             
+            stmt.execute();
+            stmt.close();
+            return (ArrayList<Produto>) lista_de_produtos;
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
 }
