@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 15-Maio-2020 às 01:34
--- Versão do servidor: 10.4.11-MariaDB
--- versão do PHP: 7.4.4
+-- Generation Time: 23-Maio-2020 às 23:47
+-- Versão do servidor: 10.1.37-MariaDB
+-- versão do PHP: 7.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -18,8 +19,28 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `db_estoque`
+-- Database: `db_estoque`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `admin`
+--
+
+CREATE TABLE `admin` (
+  `id_admin` int(10) UNSIGNED NOT NULL,
+  `login` varchar(60) NOT NULL,
+  `nome` varchar(60) NOT NULL,
+  `senha` varchar(20) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `admin`
+--
+
+INSERT INTO `admin` (`id_admin`, `login`, `nome`, `senha`) VALUES
+(1, 'SoQueroTerminarMeuTCC', 'TCCZADA', 'abc123');
 
 -- --------------------------------------------------------
 
@@ -47,21 +68,33 @@ INSERT INTO `produto` (`id_produto`, `nome`, `valor`, `quantidade`) VALUES
 (11, 'aaaaaaa', 1122, 2);
 
 --
--- Índices para tabelas despejadas
+-- Indexes for dumped tables
 --
 
 --
--- Índices para tabela `produto`
+-- Indexes for table `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id_admin`);
+
+--
+-- Indexes for table `produto`
 --
 ALTER TABLE `produto`
   ADD PRIMARY KEY (`id_produto`);
 
 --
--- AUTO_INCREMENT de tabelas despejadas
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT de tabela `produto`
+-- AUTO_INCREMENT for table `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `id_admin` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `produto`
 --
 ALTER TABLE `produto`
   MODIFY `id_produto` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
