@@ -10,10 +10,18 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- *
+ * Classe para gerar conexoes com o banco de dados
  * @author aryel.sa
  */
 public class ConFactory {
+    
+    /**
+     * Metodo usado para criar uma conexão com o banco de dados
+     * 
+     * @return DriverManager
+     * @exception RuntimeException ao se conectar ao banco ou executar o comando.
+     * @see SQLException
+     */
     public Connection getConnection() {
         try {
             return DriverManager.getConnection("jdbc:mysql://localhost/db_estoque", "root","");

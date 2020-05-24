@@ -82,20 +82,11 @@ public class fmProduto extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Nome:");
 
-        txtNome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNomeActionPerformed(evt);
-            }
-        });
-
         jLabel3.setText("Quantidade:");
 
         jLabel4.setText("Valor(unidade):");
 
         txtValor.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtValorKeyPressed(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtValorKeyTyped(evt);
             }
@@ -199,7 +190,12 @@ public class fmProduto extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    /**
+     * Metodo usando quando ocorre um click no botão Salvar
+     * 
+     * @param evt - evento de clicar
+     */
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
         
         int valor = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja salvar ?", "Sistema de Estoque", 1);
@@ -228,16 +224,31 @@ public class fmProduto extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Dados gravados com sucesso!");
         }
     }//GEN-LAST:event_btSalvarActionPerformed
-
+    
+    /**
+     * Metodo usando quando ocorre um click no botão Sair
+     * 
+     * @param evt - evento de clicar
+     */
     private void btSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSairActionPerformed
         this.dispose();
     }//GEN-LAST:event_btSairActionPerformed
-
+    
+    /**
+     * Metodo usando quando ocorre um click no botão Novo
+     * 
+     * @param evt - evento de clicar
+     */
     private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
         this.habilitar(true);
         this.limpar();
     }//GEN-LAST:event_btNovoActionPerformed
-
+    
+    /**
+     * Metodo usando quando a janela é aberta
+     * 
+     * @param evt - evento de abrir
+     */
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
         if(this.isUpdateMode){
             Produto produto = Produto.getByID(id_produto);
@@ -252,22 +263,24 @@ public class fmProduto extends javax.swing.JInternalFrame {
         }
 
     }//GEN-LAST:event_formInternalFrameOpened
-
-    private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNomeActionPerformed
-
-    private void txtValorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtValorKeyPressed
-
-    }//GEN-LAST:event_txtValorKeyPressed
-
+    
+    /**
+     * Metodo usando quando alguma caracter é escrito no campo txtValor caso não seja um numero não sera escrito
+     * 
+     * @param evt - evento de escrever
+     */
     private void txtValorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtValorKeyTyped
         char c = evt.getKeyChar();
         if(Character.isLetter(c) && !evt.isAltDown()){
             evt.consume();
         }    
     }//GEN-LAST:event_txtValorKeyTyped
-
+    
+    /**
+     * Metodo usando para habilitar os campos do formulario
+     * 
+     * @param valor - bool para habilitar ou desabilitar os elementos
+     */
     private void habilitar (boolean valor){
         txtNome.setEnabled(valor);
         txtQuantidade.setEnabled(valor);
@@ -276,6 +289,10 @@ public class fmProduto extends javax.swing.JInternalFrame {
         btSair.setEnabled(valor);
     }
     
+    /**
+     * Metodo usando para limpar os campos do formulario
+     * 
+     */
     private void limpar (){
         txtNome.setText("");
         txtQuantidade.setValue(0);
