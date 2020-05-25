@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 import negocio.Admin;
 
 /**
- *
+ *  Classe para manipulação de dados de Admin no Banco de dados
  * @author shaw
  */
 public class AdminDAO implements IAdminDAO {
@@ -23,10 +23,23 @@ public class AdminDAO implements IAdminDAO {
     
     private Connection connection;   // fazendo conexão com o banco 
     
+        /**
+     * Construtor sem parametros que cria uma conexão ao banco de dados
+     * 
+     */
+    
     public AdminDAO (){
         this.connection = new ConFactory().getConnection();;
     }
-
+    
+    /**
+     * Metodo usado para adicionar um admin ao banco de dados
+     * 
+     * @param admin uma instancia da classe de negocio Admin
+     * @exception  RuntimeException ao inserir no banco.
+     * @see RuntimeException
+     */
+    
     @Override
     public void adiciona(Admin admin) {
         // queue sql pra adicionar admin
@@ -49,27 +62,60 @@ public class AdminDAO implements IAdminDAO {
             throw new RuntimeException(e);
         }
     }
-
+    
+    /**
+     * Metodo usado para alterar um admin do banco de dados
+     * 
+     * @param admin  uma instancia da classe de negocio Admin
+     */
+    
     @Override
     public void altera(Admin admin) {   // se não for ter este método tem que tirar isso aq
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
+     /**
+     * Metodo usado para remover um admin por id do banco de dados
+     * 
+     * @param id  uma instancia da classe de negocio Admin
+     */
+    
     @Override
     public void remove(int id) {    // se não for ter este método tem que tirar isso aq
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
+    /**
+     * Metodo usado para buscar todos os admins do banco de dados
+     * 
+     * @return ArrayList - lista de todos os produtos 
+     */
+    
     @Override
     public ArrayList<Admin> listarTodos() { // se não for ter este método tem que tirar isso aq
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
+    /**
+     * Metodo usado para buscar um admin do banco de dados por ID
+     * 
+     * @param id um id de um admin cadastrado no banco de dados
+     * @return ArrayList - lista de todos os produtos 
+     * @exception  RuntimeException ao buscar os produtos do banco de dados.
+     * @see RuntimeException
+     */
+    
+    
     @Override
     public Admin getByID(int id) {  // se não for ter este método tem que tirar isso aq
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+    /**
+     * Método usado para fazer a checkagem de login e senha no banco de dados
+     * @param login  login de alguem cadastrado no banco
+     * @param senha  senha de alguem cadastrado no banco
+     * @return retorna dizendo se foi possivel logar ou nao
+     */
         public boolean checkLogin(String login,String senha){
             PreparedStatement stmt = null;
         ResultSet rs = null;
