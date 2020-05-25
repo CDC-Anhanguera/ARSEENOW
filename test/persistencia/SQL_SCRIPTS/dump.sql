@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 23-Maio-2020 às 23:47
--- Versão do servidor: 10.1.37-MariaDB
--- versão do PHP: 7.2.12
+-- Tempo de geração: 26-Maio-2020 às 01:05
+-- Versão do servidor: 10.4.11-MariaDB
+-- versão do PHP: 7.4.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `db_estoque`
+-- Banco de dados: `db_estoque`
 --
 
 -- --------------------------------------------------------
@@ -40,7 +39,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id_admin`, `login`, `nome`, `senha`) VALUES
-(1, 'SoQueroTerminarMeuTCC', 'TCCZADA', 'abc123');
+(1, 'ademir', 'TCCZADA', '123');
 
 -- --------------------------------------------------------
 
@@ -61,40 +60,40 @@ CREATE TABLE `produto` (
 
 INSERT INTO `produto` (`id_produto`, `nome`, `valor`, `quantidade`) VALUES
 (4, 'suco de fruta', 111.11, 8),
-(5, 'sdsdfsdf', 45, 100),
-(9, 'Gelin aaaaa', 122, 1110),
-(8, 'tutsaaa', 11122.1, 4),
+(5, 'sapato 48', 45, 100),
+(9, 'gelo seco', 122, 1110),
+(8, 'Latão 500ml', 11122.1, 4),
 (10, 'farofa de suco', 111, 3),
-(11, 'aaaaaaa', 1122, 2);
+(11, 'Chinelo Freefire', 1122, 2);
 
 --
--- Indexes for dumped tables
+-- Índices para tabelas despejadas
 --
 
 --
--- Indexes for table `admin`
+-- Índices para tabela `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id_admin`);
 
 --
--- Indexes for table `produto`
+-- Índices para tabela `produto`
 --
 ALTER TABLE `produto`
   ADD PRIMARY KEY (`id_produto`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de tabelas despejadas
 --
 
 --
--- AUTO_INCREMENT for table `admin`
+-- AUTO_INCREMENT de tabela `admin`
 --
 ALTER TABLE `admin`
   MODIFY `id_admin` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `produto`
+-- AUTO_INCREMENT de tabela `produto`
 --
 ALTER TABLE `produto`
   MODIFY `id_produto` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
