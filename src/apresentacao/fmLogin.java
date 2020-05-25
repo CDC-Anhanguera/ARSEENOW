@@ -123,6 +123,11 @@ public class fmLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     *  Método pra fazer a ação do click do botão login 
+     * 
+     * @param evt  - evento de clickar no botão
+     */
     private void btLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLoginActionPerformed
         // TODO add your handling code here:
         
@@ -139,6 +144,14 @@ public class fmLogin extends javax.swing.JFrame {
        }
     }//GEN-LAST:event_btLoginActionPerformed
 
+    
+    /**
+     *  Método pra fazer a ação do click do botão cancelar 
+     * 
+     * @param evt  - evento de clickar no botão
+     */
+    
+    
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
         System.exit(0); //sair do programa 
     }//GEN-LAST:event_btCancelarActionPerformed
