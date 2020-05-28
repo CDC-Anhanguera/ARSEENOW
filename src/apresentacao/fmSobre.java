@@ -114,7 +114,12 @@ public class fmSobre extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    /**
+     * Metodo usando quando ocorre um click no botão Fechar
+     * 
+     * @param evt - evento de clicar
+     */
     private void btFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btFecharActionPerformed
         this.dispose();
     }//GEN-LAST:event_btFecharActionPerformed

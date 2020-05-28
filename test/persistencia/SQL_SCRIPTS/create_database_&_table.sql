@@ -1,3 +1,8 @@
+
+create database if not exists db_estoque ;
+
+use db_estoque;
+
 create table if not exists produto (
     id_produto int UNSIGNED not null AUTO_INCREMENT PRIMARY KEY,
     nome varchar(60),

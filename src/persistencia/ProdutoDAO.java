@@ -173,7 +173,7 @@ public class ProdutoDAO implements IProdutoDAO {
     }
     
     /**
-     * Metodo usado para buscar um produto do banco de dados pelo nome de um produto
+     * Metodo usado para buscar uma lista de produtos do banco de dados pelo nome de um produto
      * 
      * @param nome nome de um produto cadastrado no banco de dados
      * @return ArrayList - lista de produtos com o nome parecido ao passado no parametro
