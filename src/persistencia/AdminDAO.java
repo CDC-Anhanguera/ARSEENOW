@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import negocio.Admin;
@@ -67,57 +68,177 @@ public class AdminDAO implements IAdminDAO {
      * Metodo usado para alterar um admin do banco de dados
      * 
      * @param admin  uma instancia da classe de negocio Admin
+     * @exception  RuntimeException ao alterar no banco.
+     * @see RuntimeException
      */
     
     @Override
-    public void altera(Admin admin) {   // se não for ter este método tem que tirar isso aq
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void altera(Admin admin) {   
+        
+        int id = admin.getIdAdmin();
+        String sql = "UPDATE admin " + 
+                "SET nome = ?, login = ?, senha = ? WHERE id_admin = " + id;
+        
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(sql);
+            
+            stmt.setString(1, admin.getNome());
+            stmt.setString(2, admin.getLogin());
+            stmt.setString(3, admin.getSenha());
+            
+            stmt.execute();
+            System.out.println("ADMINISTRADOR ALTERADO!");
+            stmt.close();
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        
     }
     
      /**
      * Metodo usado para remover um admin por id do banco de dados
      * 
      * @param id  uma instancia da classe de negocio Admin
+     *  @exception  RuntimeException ao remover o admin do banco de dados.
+     * @see RuntimeException
      */
     
     @Override
-    public void remove(int id) {    // se não for ter este método tem que tirar isso aq
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void remove(int id) {    
+        String sql = "DELETE FROM admin WHERE id_admin = " + id;
+        
+        try {
+            PreparedStatement stmt = this.connection.prepareStatement(sql);
+            
+            stmt.execute();
+            System.out.println("ADMINISTRADOR DELETADO!");
+            stmt.close();
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
     }
     
     /**
-     * Metodo usado para buscar todos os admins do banco de dados
+     * Metodo usado para buscar todos os admin do banco de dados
      * 
-     * @return ArrayList - lista de todos os produtos 
+     * @return ArrayList - lista de todos os admin 
+     * @exception  RuntimeException ao buscar os admin do banco de dados.
+     * @see RuntimeException
      */
     
     @Override
-    public ArrayList<Admin> listarTodos() { // se não for ter este método tem que tirar isso aq
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<Admin> listarTodos() { 
+         try{
+            List<Admin> lista_de_admin;
+            lista_de_admin = new ArrayList<>();
+            PreparedStatement stmt = this.connection.prepareStatement("select * from admin");
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()){
+                Admin admin = new Admin();
+                
+                admin.setIdAdmin(rs.getInt("id_admin"));
+                admin.setNome(rs.getString("nome"));
+                admin.setLogin(rs.getString("login"));
+                admin.setSenha(rs.getString("senha"));
+                
+                lista_de_admin.add(admin);
+            }
+            rs.close();
+            stmt.close();
+            return (ArrayList<Admin>) lista_de_admin;
+        } catch(SQLException e){
+            throw new RuntimeException(e);
+        }
     }
     
     /**
      * Metodo usado para buscar um admin do banco de dados por ID
      * 
      * @param id um id de um admin cadastrado no banco de dados
-     * @return ArrayList - lista de todos os produtos 
-     * @exception  RuntimeException ao buscar os produtos do banco de dados.
+     * @return ArrayList - lista de todos os admins 
+     * @exception  RuntimeException ao buscar os admins do banco de dados.
      * @see RuntimeException
      */
     
     
     @Override
-    public Admin getByID(int id) {  // se não for ter este método tem que tirar isso aq
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Admin getByID(int id) {  
+        
+        String sql = "select * from admin where id_admin = " + id;
+        
+         try {
+            PreparedStatement stmt = this.connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            Admin admin = new Admin();
+            
+             while (rs.next()){
+                admin.setIdAdmin(rs.getInt("id_admin"));
+                admin.setNome(rs.getString("nome"));
+                admin.setLogin(rs.getString("login"));
+                admin.setSenha(rs.getString("senha"));
+            }
+             
+            stmt.execute();
+            stmt.close();
+            return admin;
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        
+        
+        
+        
     }
+    /**
+     * Metodo usado para buscar um admin do banco de dados por ID
+     * 
+     * @param nome um nome de um admin cadastrado no banco de dados
+     * @return ArrayList - lista de todos os admins 
+     * @exception  RuntimeException ao buscar os admins do banco de dados.
+     * @see RuntimeException
+     */
+    @Override
+    public ArrayList<Admin> getByNome(String nome) {
+        
+        String sql = "SELECT * FROM admin WHERE nome LIKE '%" + nome + "%'";
+        
+         try {
+             List<Admin> lista_admin;
+            lista_admin= new ArrayList<>();
+            PreparedStatement stmt = this.connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            Admin admin = new Admin();
+            
+             while (rs.next()){
+                admin.setIdAdmin(rs.getInt("id_admin"));
+                admin.setNome(rs.getString("nome"));
+                admin.setLogin(rs.getString("login"));
+                admin.setSenha(rs.getString("senha"));
+                
+                lista_admin.add(admin);
+            }
+             
+            stmt.execute();
+            stmt.close();
+            return (ArrayList<Admin>) lista_admin;
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        
+        
+    }
+    
+    
     /**
      * Método usado para fazer a checkagem de login e senha no banco de dados
      * @param login  login de alguem cadastrado no banco
      * @param senha  senha de alguem cadastrado no banco
      * @return retorna dizendo se foi possivel logar ou nao
      */
-        public boolean checkLogin(String login,String senha){
-            PreparedStatement stmt = null;
+    @Override
+    public boolean checkLogin(String login,String senha){
+        PreparedStatement stmt = null;
         ResultSet rs = null;
 
         boolean check = false;
@@ -145,5 +266,7 @@ public class AdminDAO implements IAdminDAO {
         return check;    
     
         }
+
+   
     
 }

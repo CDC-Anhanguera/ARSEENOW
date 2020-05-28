@@ -15,12 +15,27 @@ import persistencia.AdminDAO;
  * @author shaw
  */
 public class fmAdmin extends javax.swing.JInternalFrame {
+    private int id_admin;
+    private boolean isUpdateMode = false;
 
     /**
      * Creates new form fmAdmin
      */
     public fmAdmin() {
         initComponents();
+        
+    }
+    
+     /**
+     * Cria um novo formulario fmAdmin passando um modo do formulario
+     * 
+     * @param isUpdateMode boolean usada para mudar o formulario para modo de edição
+     * @param id_admin id do admin a ser aberto no formulario
+     */
+     public fmAdmin(boolean isUpdateMode, int id_admin) {
+        initComponents();
+        this.isUpdateMode = isUpdateMode;
+        this.id_admin = id_admin;
     }
 
     /**
@@ -41,6 +56,24 @@ public class fmAdmin extends javax.swing.JInternalFrame {
         txtNome = new javax.swing.JTextField();
         btCadastrarAdmin = new javax.swing.JButton();
         btCancelar = new javax.swing.JButton();
+
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Insira os dados "));
 
@@ -125,9 +158,13 @@ public class fmAdmin extends javax.swing.JInternalFrame {
                 .addContainerGap(38, Short.MAX_VALUE))
         );
 
+        jPanel1.getAccessibleContext().setAccessibleName("Insira os dados");
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
 /**
      * Metodo usando quando ocorre um click no botão Salvar
      * 
@@ -147,8 +184,11 @@ public class fmAdmin extends javax.swing.JInternalFrame {
             admin.setLogin (txtLogin.getText());
             admin.setSenha(txtSenha.getText());
 
-            // gravamos os dados
-            // admin.salvar();
+            if(this.isUpdateMode){
+                admin.setIdAdmin(this.id_admin);
+                admin.altera();
+                this.dispose();
+            } else {
 
             AdminDAO dao = new AdminDAO();
             dao.adiciona(admin);
@@ -156,6 +196,7 @@ public class fmAdmin extends javax.swing.JInternalFrame {
             //limpa formulario
             limpar();
             habilitar(false);
+            }
 
             JOptionPane.showMessageDialog(null, "Dados gravados com sucesso!");
         }
@@ -169,9 +210,24 @@ public class fmAdmin extends javax.swing.JInternalFrame {
     
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
         // TODO add your handling code here:
-
         this.dispose();
     }//GEN-LAST:event_btCancelarActionPerformed
+
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+        // TODO add your handling code here:
+         if(this.isUpdateMode){
+            Admin admin = Admin.getByID(id_admin);
+            
+            txtNome.setText(admin.getNome());
+            txtLogin.setText(admin.getLogin());
+            txtSenha.setText(admin.getSenha());
+            
+        } else {
+            this.habilitar(false);
+            this.limpar();
+        }
+
+    }//GEN-LAST:event_formInternalFrameOpened
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

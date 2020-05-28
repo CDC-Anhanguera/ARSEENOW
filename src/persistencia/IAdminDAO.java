@@ -45,6 +45,24 @@ public interface IAdminDAO {
      * @return Admin - admin com o id passado
      */
     public Admin getByID(int id);
+    
+    /**
+     * Metodo usado para buscar um admin previamente persistido
+     * 
+     * @param nome nome de identificação de um admin
+     * @return Admin - admin com o nome passado
+     */
+    public ArrayList<Admin>  getByNome(String nome);
+     
+    /**
+     * Método usado para fazer a checkagem de login e senha no banco de dados
+     * @param login  login de alguem cadastrado no banco
+     * @param senha  senha de alguem cadastrado no banco
+     * @return retorna dizendo se foi possivel logar ou nao
+     */
+    public boolean checkLogin(String login,String senha);
+    
+    
 }
 
 

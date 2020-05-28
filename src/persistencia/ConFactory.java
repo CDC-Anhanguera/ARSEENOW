@@ -24,7 +24,7 @@ public class ConFactory {
      */
     public Connection getConnection() {
         try {
-            return DriverManager.getConnection("jdbc:mysql://localhost/db_estoque", "root","");
+            return DriverManager.getConnection("jdbc:mysql://localhost/db_estoque?useTimezone=true&serverTimezone=UTC", "root","");
         }
         catch (SQLException excecao){
             throw new RuntimeException(excecao);

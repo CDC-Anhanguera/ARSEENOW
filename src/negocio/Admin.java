@@ -5,6 +5,10 @@
  */
 package negocio;
 
+import java.util.ArrayList;
+import persistencia.AdminDAO;
+import persistencia.IAdminDAO;
+
 /**
  * Classe de negócio Admin
  * @author shaw
@@ -97,6 +101,64 @@ public class Admin {
     
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+    
+    /**
+     * Metodo usado para persistir a instancia da classe
+     */
+    public void salvar(){
+        IAdminDAO dao = new AdminDAO();
+        dao.adiciona(this);
+    }
+    
+    /**
+     * Metodo usado para alterar a instancia da classe previamente persistida
+     */
+    public void altera(){
+        IAdminDAO dao = new AdminDAO();
+        dao.altera(this);
+    }
+    
+    /**
+     * Metodo usado para excluir a instancia da classe previamente persistida
+     * 
+     * @param id - numero de identificação da instancia a ser excluida
+     */
+    public static void excluir(int id){
+        IAdminDAO dao = new AdminDAO();
+        dao.remove(id);
+    }
+    
+    /**
+     * Metodo usado para buscar todas as instancia da classe persistidas
+     * 
+     * @return ArrayList - lista de produtos persistidos
+     */
+    public static ArrayList<Admin> getAll(){
+        IAdminDAO dao = new AdminDAO();
+        return dao.listarTodos();
+    }
+    
+    /**
+     * Metodo usado para buscar uma a instancia da classe persistida
+     * 
+     * @param  id  - identificador do produto
+     * @return Produto - produto de mesmo id passado como parametro
+     */
+    public static Admin getByID(int id){
+        IAdminDAO dao = new AdminDAO();
+        return dao.getByID(id);
+    }
+    
+    /**
+     * Metodo usado para buscar uma lista de instancias da classe persistida por nome
+     * 
+     * @param  nome  - nome do produto
+     * @return ArrayList - Lista de produtos com o nome parecido com o nome passado
+     */
+    public static ArrayList<Admin> getByNome(String nome){
+        IAdminDAO dao = new AdminDAO();
+        return dao.getByNome(nome);
     }
     
 }
